@@ -6,30 +6,35 @@ jQuery plugin that resolves checkbox dependency based on a predefined map(depend
 
 
 
-Sample Usage
-============
+Usage
+======
+
+use dependency-group attribute in your check boxes.
+
+You have to have a dependency dictionary.
+
+for example:
+
+ you have a check box foo and your requirement is to check foo it must have other two check boxes (ids are 'bar', 'dum') checked. To achieve that you will have have the following check boxes.
+ 
+     <input type="checkbox" id="bar"> Bar
+     <input type="checkbox" id="dum"> Dum
+     <input type="checkbox" id="foo" dependency-group="foo"> Foo
+     
+
+JS
 
     $(function () {
-      var selectedMessage = '____ selected.';
-      var deselectedMessage = '____ deselected.';
       
-      var pgRoleTitles = function(ids){
-        ids = ( ids instanceof Array ) ? ids : [ids]
-        var titles = [];
-        $.each(ids, function(index, id){
-          titles.push($('#' + id).parents('fieldset.inputs').find('legend span').html() + ' ' + $('#' +       id).next('span').find('label').html())
-        });
-        return titles.join(' | ');
-      }
       
       $('.permission_group_roles').chkDependencyResolver({
-      rolesGroupDependencyMap: {"allowance_heads":["branch_admin_home"],"markers":["branch_admin_home"],"front_desk":["front_desk_room_view|front_desk_all"],"hotel":["branch_admin_home"]},
+      rolesGroupDependencyMap: {"foo":["bar,dum"]},
       notifySelected: function (ids) {
-        Message.showWarning(selectedMessage.replace('____', pgRoleTitles(ids)))
+        //render message
       },
       
       notifyDeselected: function (ids) {
-        Message.showWarning(deselectedMessage .replace('____', pgRoleTitles(ids)))
+        //render message
       },
       notSelector: '[dependency-group=front_desk]'
       })
